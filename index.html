@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WandileWrites — Social Media Caption Writer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; background: #fff; }
+  a { color: #1D9E75; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 2rem; border-bottom: 1px solid #eee; background: #fff;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+  .nav-logo span { color: #1D9E75; }
+  .nav-links { display: flex; gap: 24px; font-size: 14px; color: #555; }
+  .nav-links a { color: #555; }
+  .nav-cta {
+    background: #1D9E75; color: #fff; border: none;
+    padding: 9px 20px; border-radius: 8px; font-size: 14px;
+    font-weight: 600; cursor: pointer; text-decoration: none;
+  }
+  .nav-cta:hover { background: #0F6E56; text-decoration: none; }
+
+  .hero {
+    padding: 5rem 2rem 4rem; text-align: center;
+    background: linear-gradient(135deg, #f0fdf8 0%, #fff 100%);
+  }
+  .badge {
+    display: inline-block; background: #E1F5EE; color: #0F6E56;
+    font-size: 13px; font-weight: 600; padding: 5px 14px;
+    border-radius: 999px; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: 42px; font-weight: 700; line-height: 1.2;
+    margin-bottom: 1.2rem; max-width: 580px; margin-left: auto; margin-right: auto;
+  }
+  .hero h1 span { color: #1D9E75; }
+  .hero p {
+    font-size: 17px; color: #555; line-height: 1.7;
+    max-width: 500px; margin: 0 auto 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: #1D9E75; color: #fff; border: none;
+    padding: 13px 28px; border-radius: 8px; font-size: 15px;
+    font-weight: 600; cursor: pointer; text-decoration: none;
+  }
+  .btn-primary:hover { background: #0F6E56; text-decoration: none; }
+  .btn-outline {
+    background: transparent; color: #1a1a1a;
+    border: 1.5px solid #ccc; padding: 13px 28px;
+    border-radius: 8px; font-size: 15px; cursor: pointer; text-decoration: none;
+  }
+  .btn-outline:hover { border-color: #1D9E75; color: #1D9E75; text-decoration: none; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; background: #f8f8f6; border-top: 1px solid #eee; border-bottom: 1px solid #eee;
+  }
+  .stat {
+    text-align: center; padding: 1.8rem 1rem;
+    border-right: 1px solid #eee;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-size: 30px; font-weight: 700; color: #1D9E75; }
+  .stat-label { font-size: 13px; color: #777; margin-top: 4px; }
+
+  section { padding: 4rem 2rem; max-width: 860px; margin: 0 auto; }
+  .section-label {
+    font-size: 12px; font-weight: 700; color: #1D9E75;
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  }
+  section h2 { font-size: 28px; font-weight: 700; margin-bottom: 0.6rem; }
+  .sub { font-size: 16px; color: #666; margin-bottom: 2.5rem; line-height: 1.6; }
+
+  .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .pkg {
+    background: #fff; border: 1.5px solid #e5e5e5;
+    border-radius: 12px; padding: 1.5rem; position: relative;
+  }
+  .pkg.featured { border: 2.5px solid #1D9E75; }
+  .pkg-badge {
+    position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    background: #1D9E75; color: #fff; font-size: 11px; font-weight: 700;
+    padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+  }
+  .pkg-name { font-size: 13px; font-weight: 600; color: #888; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .pkg-price { font-size: 30px; font-weight: 700; margin-bottom: 0.3rem; }
+  .pkg-price span { font-size: 15px; color: #888; font-weight: 400; }
+  .pkg-desc { font-size: 13px; color: #888; margin-bottom: 1.2rem; line-height: 1.5; }
+  .pkg ul { list-style: none; font-size: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .pkg ul li { display: flex; align-items: flex-start; gap: 8px; }
+  .pkg ul li::before { content: "✓"; color: #1D9E75; font-weight: 700; flex-shrink: 0; }
+  .pkg-btn {
+    width: 100%; margin-top: 1.5rem; padding: 10px;
+    border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid #ccc; background: transparent; color: #1a1a1a;
+    transition: all 0.2s;
+  }
+  .pkg-btn:hover { border-color: #1D9E75; color: #1D9E75; }
+  .pkg.featured .pkg-btn { background: #1D9E75; color: #fff; border: none; }
+  .pkg.featured .pkg-btn:hover { background: #0F6E56; }
+
+  .samples { display: flex; flex-direction: column; gap: 16px; }
+  .sample-card {
+    background: #fff; border: 1px solid #e5e5e5;
+    border-left: 4px solid #1D9E75; border-radius: 0 10px 10px 0; padding: 1.2rem 1.5rem;
+  }
+  .sample-tag {
+    display: inline-block; font-size: 11px; font-weight: 700; color: #0F6E56;
+    background: #E1F5EE; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .sample-text { font-size: 15px; line-height: 1.7; color: #333; }
+  .sample-hashtags { font-size: 13px; color: #1D9E75; margin-top: 8px; }
+
+  .contact-box {
+    background: #f8fdf9; border: 1.5px solid #c8ead9;
+    border-radius: 16px; padding: 2.5rem;
+  }
+  .contact-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 0.5rem; }
+  .contact-box p { font-size: 15px; color: #666; margin-bottom: 2rem; line-height: 1.6; }
+  .form-row { display: flex; flex-direction: column; gap: 12px; }
+  .form-row input, .form-row textarea {
+    padding: 12px 14px; border: 1.5px solid #ddd; border-radius: 8px;
+    font-size: 15px; background: #fff; color: #1a1a1a;
+    font-family: 'Segoe UI', Arial, sans-serif; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-row input:focus, .form-row textarea:focus { border-color: #1D9E75; }
+  .form-row textarea { min-height: 100px; resize: vertical; }
+  .form-submit {
+    background: #1D9E75; color: #fff; border: none;
+    padding: 13px; border-radius: 8px; font-size: 15px;
+    font-weight: 600; cursor: pointer; margin-top: 4px; width: 100%;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: #0F6E56; }
+  .contact-alt { text-align: center; margin-top: 1.2rem; font-size: 14px; color: #888; }
+
+  .divider { border: none; border-top: 1px solid #eee; }
+
+  footer {
+    border-top: 1px solid #eee; padding: 2rem;
+    text-align: center; font-size: 14px; color: #999;
+    background: #fafafa;
+  }
+  footer strong { color: #1a1a1a; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 28px; }
+    .stats { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid #eee; }
+    .nav-links { display: none; }
+    nav { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Wandile<span>Writes</span></div>
+  <div class="nav-links">
+    <a href="#packages">Packages</a>
+    <a href="#samples">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="#contact">Get in touch</a>
+</nav>
+
+<div class="hero">
+  <div class="badge">✦ Social media content writer</div>
+  <h1>Captions that make people <span>stop scrolling</span></h1>
+  <p>Hi, I'm Wandile. I write punchy, on-brand social media captions that drive real engagement — so you can focus on running your business.</p>
+  <div class="hero-btns">
+    <a class="btn-primary" href="#packages">See packages</a>
+    <a class="btn-outline" href="#samples">View my work</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Platforms covered</div></div>
+  <div class="stat"><div class="stat-num">48h</div><div class="stat-label">Turnaround time</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Satisfaction focus</div></div>
+</div>
+
+<section id="packages">
+  <div class="section-label">Packages</div>
+  <h2>Simple, transparent pricing</h2>
+  <p class="sub">Pick a package that fits your needs. All captions are written in your brand voice with fast turnaround.</p>
+  <div class="packages">
+    <div class="pkg">
+      <div class="pkg-name">Starter</div>
+      <div class="pkg-price">$10 <span>/ pack</span></div>
+      <div class="pkg-desc">Perfect for testing the waters</div>
+      <ul>
+        <li>5 captions</li>
+        <li>1 platform</li>
+        <li>1 revision</li>
+        <li>2-day delivery</li>
+      </ul>
+      <a class="pkg-btn" href="#contact" style="display:block; text-align:center; text-decoration:none;">Get started</a>
+    </div>
+    <div class="pkg featured">
+      <div class="pkg-badge">Most popular</div>
+      <div class="pkg-name">Growth</div>
+      <div class="pkg-price">$25 <span>/ pack</span></div>
+      <div class="pkg-desc">For brands ready to show up consistently</div>
+      <ul>
+        <li>15 captions</li>
+        <li>2 platforms</li>
+        <li>Hashtag sets included</li>
+        <li>2 revisions</li>
+        <li>3-day delivery</li>
+      </ul>
+      <a class="pkg-btn" href="#contact" style="display:block; text-align:center; text-decoration:none;">Get started</a>
+    </div>
+    <div class="pkg">
+      <div class="pkg-name">Brand</div>
+      <div class="pkg-price">$60 <span>/ pack</span></div>
+      <div class="pkg-desc">Full month of content, done for you</div>
+      <ul>
+        <li>30 captions</li>
+        <li>Any platform</li>
+        <li>Hashtags + content ideas</li>
+        <li>3 revisions</li>
+        <li>5-day delivery</li>
+      </ul>
+      <a class="pkg-btn" href="#contact" style="display:block; text-align:center; text-decoration:none;">Get started</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="samples">
+  <div class="section-label">Sample work</div>
+  <h2>Captions across industries</h2>
+  <p class="sub">Here's a taste of what I write. Every caption is tailored to the brand's tone and audience.</p>
+  <div class="samples">
+    <div class="sample-card">
+      <div class="sample-tag">☕ Coffee shop — Instagram</div>
+      <div class="sample-text">That first sip. You know the one. ☕<br><br>Our single-origin Ethiopian blend is back — rich, smooth, with just a hint of blueberry that'll make your Monday feel like a Friday.<br><br>Come find us. We saved you a seat. 🪑</div>
+      <div class="sample-hashtags">#CoffeeCommunity #MorningRitual #LocalCafe #CoffeeLovers</div>
+    </div>
+    <div class="sample-card">
+      <div class="sample-tag">💪 Fitness coach — Instagram</div>
+      <div class="sample-text">You don't need to be perfect. You just need to show up.<br><br>The workout you do on your worst day? That's the one that changes everything. 💥<br><br>Save this for the next time you don't feel like it. 🔖</div>
+      <div class="sample-hashtags">#FitnessMotivation #MindsetMatters #WorkoutWednesday #ShowUp</div>
+    </div>
+    <div class="sample-card">
+      <div class="sample-tag">🛍️ Skincare brand — TikTok</div>
+      <div class="sample-text">POV: You finally found your holy grail moisturiser and you're NOT keeping it a secret 👀<br><br>Comment 'GLOW' and I'll send you the link directly. 💌</div>
+      <div class="sample-hashtags">#SkincareHack #TikTokSkincare #HydrationStation #GlowRoutine</div>
+    </div>
+    <div class="sample-card">
+      <div class="sample-tag">💼 Business — LinkedIn</div>
+      <div class="sample-text">Behind every great morning meeting is a great cup of coffee.<br><br>We supply freshly roasted, ethically sourced beans to offices across the city. Because your team deserves better than instant.<br><br>DM us to learn about our wholesale packages. ☕</div>
+      <div class="sample-hashtags">#CoffeeAtWork #OfficeWellness #LocalRoaster #BusinessCoffee</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2>Ready to work together?</h2>
+  <div class="contact-box">
+    <h3>Send me a message</h3>
+    <p>Tell me about your brand and what you need. I'll get back to you within 24 hours.</p>
+    <div class="form-row">
+      <input type="text" placeholder="Your name" />
+      <input type="email" placeholder="Your email address" />
+      <input type="text" placeholder="Your brand / business name" />
+      <textarea placeholder="What do you need? (e.g. 15 Instagram captions for a skincare brand, fun and playful tone)"></textarea>
+      <button class="form-submit" onclick="this.textContent='✓ Message sent! I\'ll be in touch soon.'; this.style.background='#0F6E56'; this.disabled=true;">Send message</button>
+    </div>
+    <div class="contact-alt">Or email me directly at <a href="mailto:wkharibe12@gmail.com">wkharibe12@gmail.com</a></div>
+  </div>
+</section>
+
+<footer>
+  <strong>WandileWrites</strong> &nbsp;·&nbsp; Social media content writer &nbsp;·&nbsp;
+  <a href="mailto:wkharibe12@gmail.com">wkharibe12@gmail.com</a><br><br>
+  &copy; 2026 Wandile Kharibe. All rights reserved.
+</footer>
+
+</body>
+</html>
